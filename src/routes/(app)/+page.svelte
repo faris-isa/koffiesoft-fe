@@ -1,7 +1,15 @@
 <script lang="ts">
+  import { applyAction, enhance } from "$app/forms";
     import "../../app.css";
 
-    let stringOperasi: string = '', hasilOperasi: number = 4, lastInput : string = 'operation', arrayOperasi: string[] = [''], memberArray: string;
+    import Equal from "svelte-material-icons/Equal.svelte";
+    import Logout from "svelte-material-icons/Logout.svelte";
+
+    let stringOperasi: string = '', hasilOperasi: any = '', lastInput : string = 'operation', arrayOperasi: string[] = [''], memberArray: string;
+
+    let defaultColor = "#000000";
+    let iconWidth = 40
+    let iconHeight = 40
 
     const handleButton = (text: string) => {
         if(text == "Del"){
@@ -160,14 +168,44 @@
         <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl text-blue-400 bg-slate-200" on:click={e => handleButton('-')} disabled="{(arrayOperasi.length >= 3 ) ? true : false}">
             -
         </button>
-        <button class="flex justify-center items-center p-auto border-gray-400 text-5xl" on:click={e => handleButton('0')}>
+        <form action="/logout" method="POST" class="w-full h-full flex justify-center items-center">
+            <button class="flex flex-col items-center justify-center text-2xl sm:text-5xl bg-red-200 w-full h-full">
+                <Logout color={defaultColor} width={iconWidth} height={iconHeight}></Logout>
+                Log Out
+            </button>
+        </form>
+        <button class="flex justify-center items-center p-auto border-l border-gray-400 text-5xl" on:click={e => handleButton('0')}>
             0
         </button>
-        <button class="bg-red-200 col-span-2 flex justify-center items-center p-auto border-l border-gray-400 border-r-0 text-5xl" on:click={e => handleButton('Del')}>
+        <button class="bg-red-200 flex justify-center items-center p-auto border-l border-gray-400 border-r-0 text-5xl" on:click={e => handleButton('Del')}>
             DEL
         </button>
-        <button class="text-center flex justify-center items-center p-auto bg-blue-400 text-white border-l border-gray-400 text-5xl">
-            =
-        </button>
+        <form action="?/calc" method="POST" class="w-full h-full flex justify-center items-center" use:enhance={({form, data}) => {
+            // Before form submission to server
+            const dataForm = data
+    
+            // After form submission
+            return async ({ result, update }) => {
+                if(result.type === 'success'){
+                    const data = result.data;
+                    hasilOperasi = data?.result;
+                }
+
+                if(result.type === 'failure'){
+                    await applyAction(result)
+                }
+
+                update();
+            }
+        }}>
+            <input type="hidden" name="arrayData" bind:value={arrayOperasi}>
+            <button class="flex flex-col items-center justify-center bg-blue-400 w-full h-full text-white border-l border-gray-400">
+                <Equal color={"#fff"} width={72} height={72}></Equal>
+            </button>
+            <!-- <button class="text-center flex justify-center items-center p-auto bg-blue-400 text-white border-l border-gray-400 text-5xl">
+                =
+            </button> -->
+        </form>
+        
     </div>
 </div>
