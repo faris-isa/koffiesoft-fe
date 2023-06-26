@@ -4,14 +4,14 @@
   import { redirect } from "@sveltejs/kit";
     import "../../app.css";
 
-    let isSuccess = false;
+    let isSuccess: boolean = false;
 
     export let form: any;
 </script>
 
 <div class="flex justify-center items-center h-screen bg-indigo-100">
     <div class="flex flex-col items-center justify-center bg-gray-200 sm:p-26 p-10 sm:w-1/4 w-11/12">
-        <div class="{(isSuccess) ? 'flex mb-10 animate-pulse' : 'hidden'} w-full bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4" role="alert">
+        <div class="{(isSuccess) ? 'flex mb-10 animate-pulse' : 'hidden'} w-full bg-orange-300 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4" role="alert">
             <div class="flex flex-col">
                 <strong class="w-full font-bold">Register Success</strong>
             </div>
