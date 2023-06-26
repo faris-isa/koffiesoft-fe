@@ -1,0 +1,173 @@
+<script lang="ts">
+    import "../../app.css";
+
+    let stringOperasi: string = '', hasilOperasi: number = 4, lastInput : string = 'operation', arrayOperasi: string[] = [''], memberArray: string;
+
+    const handleButton = (text: string) => {
+        if(text == "Del"){
+            lastInput = 'operation';
+            stringOperasi = '';
+            hasilOperasi = 0;
+            arrayOperasi = [''];
+            return;
+        }
+
+        if(text == "C"){
+            if(lastInput == "res"){
+                lastInput = 'operation';
+                stringOperasi = '';
+                hasilOperasi = 0;
+                arrayOperasi = ['']
+                return;
+            }
+
+            lastInput = 'operation';
+            if(stringOperasi != ''){
+                stringOperasi = stringOperasi.substring(0, stringOperasi.length-1);
+                memberArray = arrayOperasi[arrayOperasi.length-1];
+                memberArray = memberArray.substring(0, memberArray.length-1);
+                arrayOperasi[arrayOperasi.length-1] = memberArray;
+                if(arrayOperasi[arrayOperasi.length-1] == ''){
+                    arrayOperasi.pop()
+                }
+                return;
+            } else {
+                return null;
+            }
+        } 
+
+        if(text == "=") {
+            lastInput = 'res';
+            return;
+        }
+
+        if(lastInput == 'operator' && (text == '+' || text == '-' || text == '*' || text == '/')) {
+            stringOperasi = stringOperasi.substring(0, stringOperasi.length - 1);
+        }
+
+        if(lastInput == 'res'){
+            lastInput = 'operation';
+            if(text == '0'){
+                stringOperasi = '';
+                hasilOperasi = 0;
+                return;
+            }
+
+            if(text == "+" || text == "-" || text == "*" || text == "/"){
+                // hasilOperasi = calculate();
+                // if(hasilOperasi.endsWith(".0")){
+                // hasilOperasi = hasilOperasi.replaceAll(".0", "");
+                // }
+                stringOperasi = hasilOperasi + text;
+                return;
+            }
+
+            if(text == "1" || text == "2" || text == "3" || text == "4" || text == "5" || text == "6" || text == "7" || text == "8" || text == "9") {
+                stringOperasi = text;
+                // hasilOperasi = calculate();
+                // if(hasilOperasi.endsWith(".0")){
+                // hasilOperasi = hasilOperasi.replaceAll(".0", "");
+                // }
+                return;
+            }
+        }
+        
+        if(arrayOperasi.length <= 3){
+    
+            if(text == "+" || text == "-" || text == "*" || text == "/"){
+                stringOperasi = stringOperasi + text;
+                lastInput = 'operator';
+                memberArray = text;
+                arrayOperasi[arrayOperasi.length] = memberArray;
+                arrayOperasi[arrayOperasi.length] = '';
+                return;
+            }
+    
+            stringOperasi = stringOperasi + text;
+            lastInput = 'operation';
+            memberArray = arrayOperasi[arrayOperasi.length-1];
+            if(memberArray == "+" || memberArray == "-" || memberArray == "*" || memberArray == "/"){
+                arrayOperasi[arrayOperasi.length] = '';
+                arrayOperasi[arrayOperasi.length-1] = text;
+                return;
+            }
+            arrayOperasi[arrayOperasi.length-1] = memberArray + text;
+            // }
+            // hasilOperasi = calculate();
+            // if(hasilOperasi.endsWith(".0")){
+            //     hasilOperasi = hasilOperasi.replaceAll(".0", "");
+            //     return;
+            // }
+        }
+
+    }
+
+
+
+</script>
+
+<div class="flex flex-col w-full h-screen">
+    <div class="bg-green-100 h-1/6 w-full sm:h-1/4 border-2 text-right">
+        <div class="block h-1/2 -mt-4">
+            <p class="sm:text-hasilOperasi text-res-try">
+                {stringOperasi}
+            </p>
+        </div>
+        <div class="h-1/2 sm:text-hasilOperasi text-res-def">
+            {hasilOperasi}
+        </div>
+    </div>
+    <div class="h-5/6 sm:h-3/4 w-full grid grid-cols-4">
+        <button class="col-span-3 flex justify-center items-center p-auto border border-gray-400 border-l-0 border-r-0 text-5xl" on:click={e => handleButton('C')}>
+            C
+        </button>
+        <button class="flex justify-center items-center p-auto border-l border-b border-t border-gray-400 text-5xl text-blue-400 bg-slate-200" on:click={e => handleButton('+')} disabled="{(arrayOperasi.length >= 3 ) ? true : false}">
+            +
+        </button>
+        <button class="flex justify-center items-center p-auto border-b border-gray-400 text-5xl" on:click={e => handleButton('7')}>
+            7
+        </button>
+        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl" on:click={e => handleButton('8')}>
+            8
+        </button>
+        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl" on:click={e => handleButton('9')}>
+            9
+        </button>
+        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl text-blue-400 bg-slate-200" on:click={e => handleButton('/')} disabled="{(arrayOperasi.length >= 3 ) ? true : false}">
+            /
+        </button>
+        <button class="flex justify-center items-center p-auto border-b border-gray-400 text-5xl" on:click={e => handleButton('4')}>
+            4
+        </button>
+        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl" on:click={e => handleButton('5')}>
+            5
+        </button>
+        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl" on:click={e => handleButton('6')}>
+            6
+        </button>
+        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl text-blue-400 bg-slate-200" on:click={e => handleButton('*')} disabled="{(arrayOperasi.length >= 3 ) ? true : false}">
+            *
+        </button>
+        <button class="flex justify-center items-center p-auto border-b border-gray-400 border-t-0 border-r-0 text-5xl" on:click={e => handleButton('1')}>
+            1
+        </button>
+        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl" on:click={e => handleButton('2')}>
+            2
+        </button>
+        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl" on:click={e => handleButton('3')}>
+            3
+        </button>
+        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl text-blue-400 bg-slate-200" on:click={e => handleButton('-')} disabled="{(arrayOperasi.length >= 3 ) ? true : false}">
+            -
+        </button>
+        <button class="flex justify-center items-center p-auto border-gray-400 text-5xl" on:click={e => handleButton('0')}>
+            0
+        </button>
+        <button class="bg-red-200 col-span-2 flex justify-center items-center p-auto border-l border-gray-400 border-r-0 text-5xl" on:click={e => handleButton('Del')}>
+            DEL
+        </button>
+        <button class="text-center flex justify-center items-center p-auto bg-blue-400 text-white border-l border-gray-400 text-5xl">
+            =
+        </button>
+    </div>
+</div>
