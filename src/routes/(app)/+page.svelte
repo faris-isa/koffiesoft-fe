@@ -33,13 +33,20 @@
             if(stringOperasi != ''){
                 stringOperasi = stringOperasi.substring(0, stringOperasi.length-1);
                 memberArray = arrayOperasi[arrayOperasi.length-1];
+                console.log(memberArray)
+                if(memberArray == "tambah" || memberArray == "kurang" || memberArray == "kali" || memberArray == "bagi"){
+                    arrayOperasi.pop();
+                    return;
+                }
                 memberArray = memberArray.substring(0, memberArray.length-1);
                 arrayOperasi[arrayOperasi.length-1] = memberArray;
                 if(arrayOperasi[arrayOperasi.length-1] == ''){
                     arrayOperasi.pop()
                 }
+                console.log(arrayOperasi);
                 return;
             } else {
+                console.log(arrayOperasi);
                 return null;
             }
         } 
@@ -55,27 +62,32 @@
 
         if(lastInput == 'res'){
             lastInput = 'operation';
+            arrayOperasi = ['']
+            stringOperasi = '';
             if(text == '0'){
-                stringOperasi = '';
                 hasilOperasi = 0;
                 return;
             }
 
             if(text == "+" || text == "-" || text == "*" || text == "/"){
-                // hasilOperasi = calculate();
-                // if(hasilOperasi.endsWith(".0")){
-                // hasilOperasi = hasilOperasi.replaceAll(".0", "");
-                // }
-                stringOperasi = hasilOperasi + text;
-                return;
-            }
-
-            if(text == "1" || text == "2" || text == "3" || text == "4" || text == "5" || text == "6" || text == "7" || text == "8" || text == "9") {
-                stringOperasi = text;
-                // hasilOperasi = calculate();
-                // if(hasilOperasi.endsWith(".0")){
-                // hasilOperasi = hasilOperasi.replaceAll(".0", "");
-                // }
+                stringOperasi = hasilOperasi;
+                arrayOperasi[0] = hasilOperasi;
+                stringOperasi = stringOperasi + text;
+                lastInput = 'operator';
+                if(text == "+"){
+                    memberArray = "tambah";
+                }
+                if(text == "-"){
+                    memberArray = "kurang";
+                }
+                if(text == "*"){
+                    memberArray = "kali";
+                }
+                if(text == "/"){
+                    memberArray = "bagi";
+                }
+                arrayOperasi[arrayOperasi.length] = memberArray;
+                arrayOperasi[arrayOperasi.length] = '';
                 return;
             }
         }
@@ -85,7 +97,18 @@
             if(text == "+" || text == "-" || text == "*" || text == "/"){
                 stringOperasi = stringOperasi + text;
                 lastInput = 'operator';
-                memberArray = text;
+                if(text == "+"){
+                    memberArray = "tambah";
+                }
+                if(text == "-"){
+                    memberArray = "kurang";
+                }
+                if(text == "*"){
+                    memberArray = "kali";
+                }
+                if(text == "/"){
+                    memberArray = "bagi";
+                }
                 arrayOperasi[arrayOperasi.length] = memberArray;
                 arrayOperasi[arrayOperasi.length] = '';
                 return;
@@ -94,12 +117,14 @@
             stringOperasi = stringOperasi + text;
             lastInput = 'operation';
             memberArray = arrayOperasi[arrayOperasi.length-1];
-            if(memberArray == "+" || memberArray == "-" || memberArray == "*" || memberArray == "/"){
+            if(memberArray == "tambah" || memberArray == "kurang" || memberArray == "kali" || memberArray == "bagi"){
                 arrayOperasi[arrayOperasi.length] = '';
-                arrayOperasi[arrayOperasi.length-1] = text;
+                arrayOperasi[arrayOperasi.length-1] = memberArray;
+                console.log(arrayOperasi)
                 return;
             }
             arrayOperasi[arrayOperasi.length-1] = memberArray + text;
+            console.log(arrayOperasi);
             // }
             // hasilOperasi = calculate();
             // if(hasilOperasi.endsWith(".0")){
@@ -129,7 +154,7 @@
         <button class="col-span-3 flex justify-center items-center p-auto border border-gray-400 border-l-0 border-r-0 text-5xl" on:click={e => handleButton('C')}>
             C
         </button>
-        <button class="flex justify-center items-center p-auto border-l border-b border-t border-gray-400 text-5xl text-blue-400 bg-slate-200" on:click={e => handleButton('+')} disabled="{(arrayOperasi.length >= 3 ) ? true : false}">
+        <button class="flex justify-center items-center p-auto border-l border-b border-t border-gray-400 text-5xl text-blue-400 bg-slate-200" on:click={e => handleButton('+')} disabled="{(arrayOperasi.length > 3 ) ? true : false}">
             +
         </button>
         <button class="flex justify-center items-center p-auto border-b border-gray-400 text-5xl" on:click={e => handleButton('7')}>
@@ -141,7 +166,7 @@
         <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl" on:click={e => handleButton('9')}>
             9
         </button>
-        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl text-blue-400 bg-slate-200" on:click={e => handleButton('/')} disabled="{(arrayOperasi.length >= 3 ) ? true : false}">
+        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl text-blue-400 bg-slate-200" on:click={e => handleButton('/')} disabled="{(arrayOperasi.length > 3 ) ? true : false}">
             /
         </button>
         <button class="flex justify-center items-center p-auto border-b border-gray-400 text-5xl" on:click={e => handleButton('4')}>
@@ -153,7 +178,7 @@
         <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl" on:click={e => handleButton('6')}>
             6
         </button>
-        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl text-blue-400 bg-slate-200" on:click={e => handleButton('*')} disabled="{(arrayOperasi.length >= 3 ) ? true : false}">
+        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl text-blue-400 bg-slate-200" on:click={e => handleButton('*')} disabled="{(arrayOperasi.length > 3 ) ? true : false}">
             *
         </button>
         <button class="flex justify-center items-center p-auto border-b border-gray-400 border-t-0 border-r-0 text-5xl" on:click={e => handleButton('1')}>
@@ -165,7 +190,7 @@
         <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl" on:click={e => handleButton('3')}>
             3
         </button>
-        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl text-blue-400 bg-slate-200" on:click={e => handleButton('-')} disabled="{(arrayOperasi.length >= 3 ) ? true : false}">
+        <button class="flex justify-center items-center p-auto border-b border-l border-gray-400 text-5xl text-blue-400 bg-slate-200" on:click={e => handleButton('-')} disabled="{(arrayOperasi.length > 3 ) ? true : false}">
             -
         </button>
         <form action="/logout" method="POST" class="w-full h-full flex justify-center items-center">
@@ -188,6 +213,7 @@
             return async ({ result, update }) => {
                 if(result.type === 'success'){
                     const data = result.data;
+                    lastInput = "res";
                     hasilOperasi = data?.result;
                 }
 
